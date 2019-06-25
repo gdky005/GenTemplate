@@ -37,7 +37,7 @@ fun main(args: Array<String>) {
                 "周杰伦",
                 "我是你的老歌迷了")
 
-        logD("模板文件地址：$testFtl")
+        logD("模板文件地址：$destFilePath")
         val template = cfg.getTemplate(resourceFtl)
         val writer = FileWriter(distFile)
         template.process(testBean, writer)
@@ -82,15 +82,20 @@ private fun writeToLocal(destination: String, input: InputStream) {
             file.parentFile.mkdirs()
         }
 
-        if (!file.exists())
+        if (!file.exists()) {
             file.createNewFile()
 
-        val downloadFile = FileOutputStream(destination)
+            val downloadFile = FileOutputStream(destination)
 
-        someFunc(input, downloadFile)
+            someFunc(input, downloadFile)
 
-        downloadFile.close()
-        input.close()
+            downloadFile.close()
+            input.close()
+        } else {
+            logD("无需创建文件，已经使用本地缓存文件：" + file.absolutePath)
+        }
+
+
     } catch (e: Exception) {
     }
 }
