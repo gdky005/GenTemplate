@@ -7,7 +7,6 @@ fun main(args: Array<String>) {
     logD("开始生成模板：")
 
     val pro_dir = System.getProperty("user.dir")
-    val SC_DIR = "$pro_dir/out/"
     val template_dir = "/src/main/resources/"
     val encode = "UTF-8"
     val resourceFtl = "/test.html.ftl"
@@ -20,7 +19,7 @@ fun main(args: Array<String>) {
     logD("根目录是: $pro_dir")
 
     try {
-        val input = Main::class.java.getResourceAsStream(resourceFtl)
+        val input = Thread.currentThread().javaClass.getResourceAsStream(resourceFtl)
         writeToLocal(destFilePath, input)
 
         testFtl = "$pro_dir/$name"
