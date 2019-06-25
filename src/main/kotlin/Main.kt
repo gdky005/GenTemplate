@@ -11,15 +11,17 @@ fun main(args: Array<String>) {
     val template_dir = "/src/main/resources/"
     val encode = "UTF-8"
     val resourceFtl = "/test.html.ftl"
+    val templateDir = "$pro_dir/ftl"
     var testFtl = template_dir + resourceFtl
+    var destFilePath = "$pro_dir/ftl$resourceFtl"
 
     val name = getFileNameNoFTL(testFtl)
     val distFile = File("$pro_dir/$name")
     logD("根目录是: $pro_dir")
 
     try {
-        val `is` = Main::class.java.getResourceAsStream(resourceFtl)
-        writeToLocal("$pro_dir/ftl$resourceFtl", `is`)
+        val input = Main::class.java.getResourceAsStream(resourceFtl)
+        writeToLocal(destFilePath, input)
 
         testFtl = "$pro_dir/$name"
     } catch (e: Exception) {
@@ -28,7 +30,7 @@ fun main(args: Array<String>) {
 
     try {
         val cfg = Configuration(Configuration.VERSION_2_3_22)
-        cfg.setDirectoryForTemplateLoading(File("$pro_dir/ftl"))
+        cfg.setDirectoryForTemplateLoading(File(templateDir))
         cfg.defaultEncoding = encode
         cfg.templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
 
