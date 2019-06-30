@@ -38,8 +38,6 @@ fun main(args: Array<String>) {
         e.printStackTrace()
     }
 
-    Thread.sleep(500)
-
     try {
         val cfg = Configuration(Configuration.VERSION_2_3_22)
         cfg.setDirectoryForTemplateLoading(File(templateDestFtlDir))
