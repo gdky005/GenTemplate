@@ -11,9 +11,9 @@ import java.io.IOException
 
 //===============生成项目相关内容 start ===============
 
-val libPackageName = "com.zkteam.live.data"
+val libPackageName = "com.zkteam.live.event"
 
-const val gRootDirName = "ZKLiveData"
+const val gRootDirName = "ZKLiveEventBus"
 const val defaultLibDirName = "ZKLiveData"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
 val gLibPackageName = libPackageName.replace(".", "/")

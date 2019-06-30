@@ -27,7 +27,4 @@ dependencies {
     implementation support.design
     implementation support.app_compat
     implementation deps.kotlin_stdlib8
-
-    // 第三方库
-    implementation 'com.jeremyliao:live-event-bus:1.4.4'
 }
