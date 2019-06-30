@@ -1,4 +1,4 @@
 package bean
 
-data class TestBean(var name: String, var message: String,
-                    var packageName: String)
+public data class TestBean(var name: String, var message: String,
+                    var packageName: String, var proDir: String)
