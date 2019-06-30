@@ -11,9 +11,13 @@ import java.io.IOException
 
 //===============生成项目相关内容 start ===============
 
+val libPackageName = "com.zkteam.livedata.bus1"
+
 const val gRootDirName = "ZKLiveDataBus1"
+const val defaultLibDirName = "ZKLiveData"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
-val gAppPackageName = "com.zkteam.livedata.bus1".replace(".", "/")
+val gLibPackageName = libPackageName.replace(".", "/")
+val gAppPackageName = "$gLibPackageName/demo"
 
 //===============生成项目相关内容 end ===============
 
@@ -31,10 +35,12 @@ const val resourceZip = "/ZKLiveDataBus.zip"
 val resourceZipList = mutableListOf(resourceZip, "/ftl.zip")
 val ftl2FileMap = mutableMapOf(
         "/README.md.ftl" to "/$gRootDirName/README.md",
+        "/settings.gradle.ftl" to "/$gRootDirName/settings.gradle",
         "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
         "/app/values/strings.xml.ftl" to "/$gRootDirName/app/src/main/res/values/strings.xml",
         "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
-        "/app/AndroidManifest.xml.ftl" to "/$gRootDirName/app/src/main/AndroidManifest.xml"
+        "/app/AndroidManifest.xml.ftl" to "/$gRootDirName/app/src/main/AndroidManifest.xml",
+        "/lib/AndroidManifest.xml.ftl" to "/$gRootDirName/$gRootDirName/src/main/AndroidManifest.xml"
 )
 
 
@@ -48,6 +54,8 @@ fun main(args: Array<String>) {
     renameProDir()
     mvPackageDir()
 
+    gLibPackageDir()
+
     try {
         val cfg = Configuration(Configuration.VERSION_2_3_22)
         cfg.setDirectoryForTemplateLoading(File(templateDestFtlDir))
@@ -60,7 +68,8 @@ fun main(args: Array<String>) {
         val testBean = TestBean(
                 "WQ",
                 "模板工具",
-                "com.zkteam.livedata.bus1",
+                "$libPackageName.demo",
+                libPackageName,
                 gRootDirName)
 
         ftl2FileMap.entries.forEach {
@@ -73,6 +82,13 @@ fun main(args: Array<String>) {
     }
 
     logD("生成模板完成！")
+}
+
+fun gLibPackageDir() {
+    val libJavaDir = "$templateOutDir/$gRootDirName/$gRootDirName/src/main/java/"
+    FileUtils.deleteDirectory(File(libJavaDir))
+
+    FileUtils.forceMkdir(File(libJavaDir, libPackageName))
 }
 
 private fun genFileForTemplate(cfg: Configuration, testBean: TestBean, resourceFtl: String, destFile: String) {
@@ -104,6 +120,13 @@ private fun renameProDir() {
     val maxTempDir = File(templateOutDir, "__MACOSX")
     if (maxTempDir.exists())
         FileUtils.deleteDirectory(maxTempDir)
+
+
+    // 修改 lib 的名字为 项目名
+    val libFileSourceDir = File(templateOutDir, "$gRootDirName/$defaultLibDirName")
+    libFileSourceDir.renameTo(File(templateOutDir, "$gRootDirName/$gRootDirName"))
+    if (libFileSourceDir.exists())
+        FileUtils.deleteDirectory(libFileSourceDir)
 }
 
 private fun copyZip(resourceZip: String) {
