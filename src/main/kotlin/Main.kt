@@ -11,9 +11,9 @@ import java.io.IOException
 
 //===============生成项目相关内容 start ===============
 
-val libPackageName = "com.zkteam.livedata.bus1"
+val libPackageName = "com.zkteam.live.data"
 
-const val gRootDirName = "ZKLiveDataBus1"
+const val gRootDirName = "ZKLiveData"
 const val defaultLibDirName = "ZKLiveData"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
 val gLibPackageName = libPackageName.replace(".", "/")
@@ -111,22 +111,27 @@ private fun mvPackageDir() {
 
 private fun renameProDir() {
     // 修改项目的 dir 名字
-    val fileSourceDir = File(templateOutDir, FilenameUtils.getBaseName(resourceZip))
-    fileSourceDir.renameTo(File(templateOutDir, gRootDirName))
-    if (fileSourceDir.exists())
-        FileUtils.deleteDirectory(fileSourceDir)
+
+    val name = FilenameUtils.getBaseName(resourceZip)
+    val fileSourceDir = File(templateOutDir, name)
+    if (!name.equals(gRootDirName)) {
+        fileSourceDir.renameTo(File(templateOutDir, gRootDirName))
+        if (fileSourceDir.exists())
+            FileUtils.deleteDirectory(fileSourceDir)
+    }
 
     // 如果有临时文件夹，就删除
     val maxTempDir = File(templateOutDir, "__MACOSX")
     if (maxTempDir.exists())
         FileUtils.deleteDirectory(maxTempDir)
 
-
-    // 修改 lib 的名字为 项目名
-    val libFileSourceDir = File(templateOutDir, "$gRootDirName/$defaultLibDirName")
-    libFileSourceDir.renameTo(File(templateOutDir, "$gRootDirName/$gRootDirName"))
-    if (libFileSourceDir.exists())
-        FileUtils.deleteDirectory(libFileSourceDir)
+    if (!defaultLibDirName.equals(gRootDirName)) {
+        // 修改 lib 的名字为 项目名
+        val libFileSourceDir = File(templateOutDir, "$gRootDirName/$defaultLibDirName")
+        libFileSourceDir.renameTo(File(templateOutDir, "$gRootDirName/$gRootDirName"))
+        if (libFileSourceDir.exists())
+            FileUtils.deleteDirectory(libFileSourceDir)
+    }
 }
 
 private fun copyZip(resourceZip: String) {
