@@ -26,7 +26,7 @@ fun main(args: Array<String>) {
     val proDir = System.getProperty("user.dir")
     val templateSourceDir = "/src/main/resources/"
     val encode = "UTF-8"
-    val resourceFtl = "/test.html.ftl"
+    val resourceFtl = "/MainActivity.kt.ftl"
 //    val resourceZip = "/templateZip.zip"
     val resourceZip = "/ZKLiveDataBus.zip"
 
@@ -35,9 +35,16 @@ fun main(args: Array<String>) {
     val templateDestFtlDir = "$templateOutDir/ftl"
     val testFtl = templateSourceDir + resourceFtl //test.ftl 文件目录
 
+
+    //修改包名
+    val gProRootPath = "$templateOutDir/$gRootDirName"
+    val gProRootPathAppJava = "$gProRootPath/app/src/main/java"
+
+
     val name = FilenameUtils.getBaseName(testFtl)
     val distTestFile = File("$templateDestFtlDir/$resourceFtl")
-    val destTestFile = File("$templateOutDir/$name")
+    val destTestFile = File("$gProRootPathAppJava/$gAppPackageName/$name")
+//    val destMainActivityFile = File("$templateOutDir/$name")
 
     logD("根目录是: $proDir")
     try {
@@ -52,6 +59,16 @@ fun main(args: Array<String>) {
         e.printStackTrace()
     }
 
+    logD("开始解压文件中...")
+    UnZip.unZip(File(templateOutDir, resourceZip), templateOutDir)
+    File(templateOutDir, FilenameUtils.getBaseName(resourceZip)).renameTo(File(templateOutDir, gRootDirName))
+    logD("解压文件 完成")
+
+    val defaultPackagePath = File("$gProRootPathAppJava/$defaultPackageName")
+    FileUtils.copyDirectory(defaultPackagePath, File(gProRootPathAppJava, gAppPackageName))
+    FileUtils.deleteDirectory(defaultPackagePath)
+
+
     try {
         val cfg = Configuration(Configuration.VERSION_2_3_22)
         cfg.setDirectoryForTemplateLoading(File(templateDestFtlDir))
@@ -60,7 +77,8 @@ fun main(args: Array<String>) {
 
         val testBean = TestBean(
                 "周杰伦",
-                "我是你的老歌迷了")
+                "我是你的老歌迷了",
+                "com.zkteam.livedata.bus1")
 
         logD("模板文件地址：$templateDestFtlDir")
         val template = cfg.getTemplate(resourceFtl)
@@ -69,28 +87,13 @@ fun main(args: Array<String>) {
         writer.close()
 
         logD("生成的文件：" + distTestFile.path)
-        logD("开始解压文件中...")
-        UnZip.unZip(File(templateOutDir, resourceZip), templateOutDir)
-        File(templateOutDir, FilenameUtils.getBaseName(resourceZip)).renameTo(File(templateOutDir, gRootDirName))
 
-        logD("解压文件 完成")
 
     } catch (e: IOException) {
         e.printStackTrace()
     } catch (e: Exception) {
         e.printStackTrace()
     }
-
-    //修改包名
-    val gProRootPath = "$templateOutDir/$gRootDirName"
-    val gProRootPathAppJava = "$gProRootPath/app/src/main/java"
-
-
-    val defaultPackagePath = File("$gProRootPathAppJava/$defaultPackageName")
-    FileUtils.copyDirectory(defaultPackagePath, File(gProRootPathAppJava, gAppPackageName))
-    FileUtils.deleteDirectory(defaultPackagePath)
-
-
 
     logD("生成模板完成！")
 }
