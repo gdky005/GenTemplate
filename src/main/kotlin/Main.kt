@@ -11,17 +11,24 @@ import java.io.IOException
 
 //===============生成项目相关内容 start ===============
 
-val gRootDirName = "ZKLiveDataBus1"
+const val gRootDirName = "ZKLiveDataBus1"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
 val gAppPackageName = "com.zkteam.livedata.bus1".replace(".", "/")
 
 //===============生成项目相关内容 end ===============
 
-val proDir = System.getProperty("user.dir")
-val templateSourceDir = "/src/main/resources/"
-val encode = "UTF-8"
-val resourceZip = "/ZKLiveDataBus.zip"
-val resourceZipList = mutableListOf("/ZKLiveDataBus.zip", "/ftl.zip")
+val proDir = System.getProperty("user.dir")!!
+const val ENCODE = "UTF-8"
+
+val templateOutDir = "$proDir/build"
+val templateDestFtlDir = "$templateOutDir/ftl"
+
+//修改包名
+val gProRootPathAppJava = "$templateOutDir/$gRootDirName/app/src/main/java"
+
+
+const val resourceZip = "/ZKLiveDataBus.zip"
+val resourceZipList = mutableListOf(resourceZip, "/ftl.zip")
 val ftl2FileMap = mutableMapOf(
         "/README.md.ftl" to "/$gRootDirName/README.md",
         "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
@@ -29,26 +36,6 @@ val ftl2FileMap = mutableMapOf(
         "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
         "/app/AndroidManifest.xml.ftl" to "/$gRootDirName/app/src/main/AndroidManifest.xml"
 )
-
-
-
-val resourceFtl = "/ftl/package/MainActivity.kt.ftl"
-
-
-
-
-//    val templateOutDir = "$proDir/out"
-val templateOutDir = "$proDir/build"
-val templateDestFtlDir = "$templateOutDir/ftl"
-val testFtl = templateSourceDir + resourceFtl //test.ftl 文件目录
-val gProRootPath = "$templateOutDir/$gRootDirName"
-
-//修改包名
-val gProRootPathAppJava = "$gProRootPath/app/src/main/java"
-
-val name = FilenameUtils.getBaseName(testFtl)
-val distTestFile = File("$templateDestFtlDir/$resourceFtl")
-val destTestFile = File("$gProRootPathAppJava/$gAppPackageName/$name")
 
 
 fun main(args: Array<String>) {
@@ -59,15 +46,12 @@ fun main(args: Array<String>) {
     }
 
     renameProDir()
-
     mvPackageDir()
-
-
 
     try {
         val cfg = Configuration(Configuration.VERSION_2_3_22)
         cfg.setDirectoryForTemplateLoading(File(templateDestFtlDir))
-        cfg.defaultEncoding = encode
+        cfg.defaultEncoding = ENCODE
         cfg.templateExceptionHandler = TemplateExceptionHandler.RETHROW_HANDLER
 
         logD("模板文件地址：$templateDestFtlDir")
