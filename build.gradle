@@ -8,6 +8,7 @@ buildscript {
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
+
 }
 
 group 'wq'
@@ -16,6 +17,7 @@ version '1.0-SNAPSHOT'
 apply plugin: 'kotlin'
 
 addRepos(repositories)
+
 
 dependencies {
 //    compile 'com.blankj:utilcode:1.24.4'
@@ -31,3 +33,4 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
