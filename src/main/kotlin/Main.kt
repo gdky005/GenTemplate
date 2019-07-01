@@ -151,8 +151,8 @@ private fun getAppArgs(args: Array<String>) {
     if (!packageNameForArgs.isNullOrEmpty())
         libPackageName = packageNameForArgs
 
-    if (!packageNameForArgs.isNullOrEmpty())
-        proDir = packageNameForArgs
+    if (!rootDirNameForArgs.isNullOrEmpty())
+        proDir = rootDirNameForArgs
 
     for ((index, value) in args.withIndex()) {
         logD("$index --> $value")
@@ -178,9 +178,9 @@ private fun getAppArgs(args: Array<String>) {
         }
     }
 
+    logD("app 中 文件夹的名字是:$gRootDirName")
     logD("app 中 包名是:$libPackageName")
     logD("app 中 文件夹的路径是:$proDir")
-    logD("app 中 文件夹的名字是::$gRootDirName")
 }
 
 fun gLibPackageDir() {
