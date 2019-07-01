@@ -11,9 +11,9 @@ import java.io.IOException
 
 //===============生成项目相关内容 start ===============
 
-val libPackageName = "com.zkteam.live.event"
+var libPackageName = "com.zkteam.live.event"
 
-const val gRootDirName = "ZKLiveEventBus"
+var gRootDirName = "ZKLiveEventBus"
 const val defaultLibDirName = "ZKLiveData"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
 val gLibPackageName = libPackageName.replace(".", "/")
@@ -21,7 +21,7 @@ val gAppPackageName = "$gLibPackageName/demo"
 
 //===============生成项目相关内容 end ===============
 
-val proDir = System.getProperty("user.dir")!!
+var proDir = System.getProperty("user.dir")!!
 const val ENCODE = "UTF-8"
 
 val templateOutDir = "$proDir/build"
@@ -45,6 +45,9 @@ val ftl2FileMap = mutableMapOf(
 
 
 fun main(args: Array<String>) {
+
+    getAppArgs(args)
+
     logD("开始生成模板：")
 
     for (resourceZip in resourceZipList) {
@@ -82,6 +85,73 @@ fun main(args: Array<String>) {
     }
 
     logD("生成模板完成！")
+
+    logD("清理其他无用资源【暂未让本地设置，后续如果需要，可以修改保留】")
+    clearOther()
+}
+
+// 这是清理资源的，但是目前好像不需要。因为有了更好的办法
+fun clearOther() {
+    logD("\n清理资源中...\n")
+    try {
+        for (item in resourceZipList) {
+            val tempFile = File(templateOutDir, item)
+            logD("\n清理文件 ${tempFile.path}中...\n")
+            FileUtils.forceDelete(tempFile)
+            val tempDir = File(templateOutDir, FilenameUtils.getBaseName(tempFile.path))
+            logD("\n清理文件 ${tempDir.path}中...\n")
+            FileUtils.deleteDirectory(tempDir)
+        }
+    } catch (e: Exception) {
+        print(e)
+    }
+    logD("\n清理资源 已完成\n")
+}
+
+private fun getAppArgs(args: Array<String>) {
+    val dirNameForArgs = System.getProperty("n")
+    val packageNameForArgs = System.getProperty("p")
+    val rootDirNameForArgs = System.getProperty("d")
+    logD("-Dn --> 文件夹的名字  【n】是:$dirNameForArgs")
+    logD("-Dp --> App 包名的名字【p】是:$packageNameForArgs")
+    logD("-Dd --> 生成的目录地址【d】是:$rootDirNameForArgs")
+
+    if (!dirNameForArgs.isNullOrEmpty())
+        gRootDirName = dirNameForArgs
+
+    if (!packageNameForArgs.isNullOrEmpty())
+        libPackageName = packageNameForArgs
+
+    if (!packageNameForArgs.isNullOrEmpty())
+        proDir = packageNameForArgs
+
+    for ((index, value) in args.withIndex()) {
+        logD("$index --> $value")
+
+        if (index == 0) {
+            logD("jar 后直接参数 文件夹的名字是: $value")
+            if (!value.isNullOrEmpty())
+                gRootDirName = value
+        }
+
+        if (index == 1) {
+            logD("jar 后直接参数 App 包名的名字是: $value")
+            if (!value.isNullOrEmpty()) {
+                libPackageName = value
+            }
+        }
+
+        if (index == 2) {
+            logD("jar 后直接参数 生成目录的 dir 是: $value")
+            if (!value.isNullOrEmpty()) {
+                proDir = value
+            }
+        }
+    }
+
+    logD("app 中 包名是:$libPackageName")
+    logD("app 中 文件夹的路径是:$proDir")
+    logD("app 中 文件夹的名字是::$gRootDirName")
 }
 
 fun gLibPackageDir() {
