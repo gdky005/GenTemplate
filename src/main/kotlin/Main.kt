@@ -14,26 +14,26 @@ import java.io.IOException
 var libPackageName = "com.zkteam.live.event"
 
 var gRootDirName = "ZKLiveEventBus"
-const val defaultLibDirName = "ZKLiveData"
-val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
-val gLibPackageName = libPackageName.replace(".", "/")
-val gAppPackageName = "$gLibPackageName/demo"
+var defaultLibDirName = "ZKLiveData"
+var defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
+var gLibPackageName = libPackageName.replace(".", "/")
+var gAppPackageName = "$gLibPackageName/demo"
 
 //===============生成项目相关内容 end ===============
 
 var proDir = System.getProperty("user.dir")!!
-const val ENCODE = "UTF-8"
+var ENCODE = "UTF-8"
 
-val templateOutDir = "$proDir/build"
-val templateDestFtlDir = "$templateOutDir/ftl"
+var templateOutDir = "$proDir/build"
+var templateDestFtlDir = "$templateOutDir/ftl"
 
 //修改包名
-val gProRootPathAppJava = "$templateOutDir/$gRootDirName/app/src/main/java"
+var gProRootPathAppJava = "$templateOutDir/$gRootDirName/app/src/main/java"
 
 
-const val resourceZip = "/ZKLiveDataBus.zip"
-val resourceZipList = mutableListOf(resourceZip, "/ftl.zip")
-val ftl2FileMap = mutableMapOf(
+var defaultResourceZip = "/ZKLiveDataBus.zip"
+var defaultResourceZipList = mutableListOf(defaultResourceZip, "/ftl.zip")
+var ftl2FileMap = mutableMapOf(
         "/README.md.ftl" to "/$gRootDirName/README.md",
         "/settings.gradle.ftl" to "/$gRootDirName/settings.gradle",
         "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
@@ -43,14 +43,32 @@ val ftl2FileMap = mutableMapOf(
         "/lib/AndroidManifest.xml.ftl" to "/$gRootDirName/$gRootDirName/src/main/AndroidManifest.xml"
 )
 
+// 重新初始化 部分 相关变化的参数，保证数据是最新的
+fun initParams() {
+    gLibPackageName = libPackageName.replace(".", "/")
+    gAppPackageName = "$gLibPackageName/demo"
+    templateOutDir = "$proDir/build"
+    templateDestFtlDir = "$templateOutDir/ftl"
+    gProRootPathAppJava = "$templateOutDir/$gRootDirName/app/src/main/java"
+    ftl2FileMap = mutableMapOf(
+            "/README.md.ftl" to "/$gRootDirName/README.md",
+            "/settings.gradle.ftl" to "/$gRootDirName/settings.gradle",
+            "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
+            "/app/values/strings.xml.ftl" to "/$gRootDirName/app/src/main/res/values/strings.xml",
+            "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
+            "/app/AndroidManifest.xml.ftl" to "/$gRootDirName/app/src/main/AndroidManifest.xml",
+            "/lib/AndroidManifest.xml.ftl" to "/$gRootDirName/$gRootDirName/src/main/AndroidManifest.xml"
+    )
+}
 
 fun main(args: Array<String>) {
-
     getAppArgs(args)
+
+    initParams()
 
     logD("开始生成模板：")
 
-    for (resourceZip in resourceZipList) {
+    for (resourceZip in defaultResourceZipList) {
         copyZip(resourceZip)
     }
 
@@ -86,15 +104,26 @@ fun main(args: Array<String>) {
 
     logD("生成模板完成！")
 
-    logD("清理其他无用资源【暂未让本地设置，后续如果需要，可以修改保留】")
-    clearOther()
+    doLastTask()
+
+//    logD("清理其他无用资源【暂未让本地设置，后续如果需要，可以修改保留】")
+//    clearOther()
+}
+
+private fun doLastTask() {
+    // 拷贝文件到指定目录
+    val path = "$templateOutDir/$gRootDirName"
+    // 将生成的文件夹拷贝到对应目录
+    FileUtils.copyDirectory(File(path), File(proDir, gRootDirName))
+    // 删除不需要使用的文件夹
+    FileUtils.deleteDirectory(File(templateOutDir))
 }
 
 // 这是清理资源的，但是目前好像不需要。因为有了更好的办法
 fun clearOther() {
     logD("\n清理资源中...\n")
     try {
-        for (item in resourceZipList) {
+        for (item in defaultResourceZipList) {
             val tempFile = File(templateOutDir, item)
             logD("\n清理文件 ${tempFile.path}中...\n")
             FileUtils.forceDelete(tempFile)
@@ -175,14 +204,24 @@ private fun mvPackageDir() {
     val defaultPackagePath = File("$gProRootPathAppJava/$defaultPackageName")
     if (defaultPackagePath.exists()) {
         FileUtils.copyDirectory(defaultPackagePath, File(gProRootPathAppJava, gAppPackageName))
+
+        // 删除无用的文件夹
         FileUtils.deleteDirectory(defaultPackagePath)
+        deleteDefaultPackageDir(defaultPackagePath.parentFile)
+    }
+}
+
+private fun deleteDefaultPackageDir(directory: File) {
+    if (directory.exists() && directory.listFiles().isEmpty()) {
+        FileUtils.deleteDirectory(directory)
+        deleteDefaultPackageDir(directory.parentFile)
     }
 }
 
 private fun renameProDir() {
     // 修改项目的 dir 名字
 
-    val name = FilenameUtils.getBaseName(resourceZip)
+    val name = FilenameUtils.getBaseName(defaultResourceZip)
     val fileSourceDir = File(templateOutDir, name)
     if (!name.equals(gRootDirName)) {
         fileSourceDir.renameTo(File(templateOutDir, gRootDirName))
