@@ -1,4 +1,4 @@
-package ${packageName}
+package com.zkteam.livedata.bus
 
 import android.os.Bundle
 import android.view.View

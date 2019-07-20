@@ -7,7 +7,7 @@ android {
     buildToolsVersion build_versions.build_tools
 
     defaultConfig {
-        applicationId "${packageName}"
+        applicationId "com.zkteam.livedata.bus"
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
         versionCode 1
@@ -28,5 +28,5 @@ dependencies {
     implementation support.app_compat
     implementation deps.kotlin_stdlib8
 
-    implementation zkteam.zk_ui
+
 }

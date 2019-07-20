@@ -39,6 +39,7 @@ var ftl2FileMap = mutableMapOf(
         "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
         "/app/values/strings.xml.ftl" to "/$gRootDirName/app/src/main/res/values/strings.xml",
         "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
+        "/package/WQApplication.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/${gRootDirName}Application.kt",
         "/app/AndroidManifest.xml.ftl" to "/$gRootDirName/app/src/main/AndroidManifest.xml",
         "/lib/AndroidManifest.xml.ftl" to "/$gRootDirName/$gRootDirName/src/main/AndroidManifest.xml"
 )
@@ -56,6 +57,7 @@ fun initParams() {
             "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
             "/app/values/strings.xml.ftl" to "/$gRootDirName/app/src/main/res/values/strings.xml",
             "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
+            "/package/WQApplication.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/${gRootDirName}Application.kt",
             "/app/AndroidManifest.xml.ftl" to "/$gRootDirName/app/src/main/AndroidManifest.xml",
             "/lib/AndroidManifest.xml.ftl" to "/$gRootDirName/$gRootDirName/src/main/AndroidManifest.xml"
     )
@@ -117,6 +119,9 @@ private fun doLastTask() {
     FileUtils.copyDirectory(File(path), File(proDir, gRootDirName))
     // 删除不需要使用的文件夹
     FileUtils.deleteDirectory(File(templateOutDir))
+
+    // 删除 无用文件
+    FileUtils.deleteQuietly(File("$proDir/$gRootDirName/app/src/main/java/$gAppPackageName", "WQApplication.kt"))
 }
 
 // 这是清理资源的，但是目前好像不需要。因为有了更好的办法
