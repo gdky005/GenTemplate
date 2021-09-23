@@ -7,11 +7,15 @@ import org.apache.commons.io.FilenameUtils
 import java.io.File
 import java.io.FileWriter
 import java.io.IOException
+import java.nio.file.Files
 
 
 //===============生成项目相关内容 start ===============
 
-const val gRootDirName = "TalCode"
+const val gNewName = "ExamDetail"
+const val gRootDirName = "TalCode/$gNewName"
+// 通用的文件前缀
+const val gFilePrefix = "TalFileName"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
 val gAppPackageName = "com.zkteam.livedata.bus1".replace(".", "/")
 
@@ -31,6 +35,7 @@ const val resourceZip = "/ZKLiveDataBus.zip"
 val resourceZipList = mutableListOf(resourceZip, "/ftl.zip")
 val ftl2FileMap = mutableMapOf(
         "/README.md.ftl" to "/$gRootDirName/README.md",
+        "/bean/TalFileNameDataBean.java.ftl" to "/$gRootDirName/bean/TalFileNameDataBean.java",
 //        "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
 //        "/app/values/strings.xml.ftl" to "/$gRootDirName/app/src/main/res/values/strings.xml",
 //        "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
@@ -56,15 +61,15 @@ fun main(args: Array<String>) {
 
         logD("模板文件地址：$templateDestFtlDir")
 
-
-        val testBean = TestBean(
-                "WQ",
+        val testBean = TestBean(gNewName,
                 "模板工具",
                 "com.zkteam.livedata.bus1",
                 gRootDirName)
 
         ftl2FileMap.entries.forEach {
-            genFileForTemplate(cfg, testBean, it.key, templateOutDir + it.value)
+            var newFileName = it.value
+            newFileName = newFileName.replace(gFilePrefix, gNewName)
+            genFileForTemplate(cfg, testBean, it.key, templateOutDir + newFileName)
         }
     } catch (e: IOException) {
         e.printStackTrace()
@@ -76,6 +81,9 @@ fun main(args: Array<String>) {
 }
 
 private fun genFileForTemplate(cfg: Configuration, testBean: TestBean, resourceFtl: String, destFile: String) {
+
+    File(destFile).parentFile.mkdirs()
+
     val template = cfg.getTemplate(resourceFtl)
     val writer = FileWriter(destFile)
     template.process(testBean, writer)
