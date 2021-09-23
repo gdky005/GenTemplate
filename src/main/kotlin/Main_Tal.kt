@@ -13,7 +13,8 @@ import java.nio.file.Files
 //===============生成项目相关内容 start ===============
 
 const val gNewName = "ExamDetail"
-var gRootDirName = "TalCode/${gNewName.toLowerCase()}"
+const val gRootDirName = "TalCode/${gNewName}"
+//var gRootDirName = "TalCode/${gNewName.toLowerCase()}"
 // 通用的文件前缀
 const val gFilePrefix = "TalFileName"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
@@ -36,6 +37,8 @@ val resourceZipList = mutableListOf(resourceZip, "/ftl.zip")
 val ftl2FileMap = mutableMapOf(
         "/README.md.ftl" to "/$gRootDirName/README.md",
         "/bean/TalFileNameDataBean.java.ftl" to "/$gRootDirName/bean/TalFileNameDataBean.java",
+        "/viewmodel/TalFileNameViewModel.java.ftl" to "/$gRootDirName/viewmodel/TalFileNameViewModel.java",
+        "/repo/TalFileNameRepository.java.ftl" to "/$gRootDirName/repo/TalFileNameRepository.java",
 //        "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
 //        "/app/values/strings.xml.ftl" to "/$gRootDirName/app/src/main/res/values/strings.xml",
 //        "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
