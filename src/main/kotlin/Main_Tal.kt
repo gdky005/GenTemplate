@@ -11,7 +11,7 @@ import java.io.IOException
 
 //===============生成项目相关内容 start ===============
 
-const val gRootDirName = "ZKLiveDataBus1"
+const val gRootDirName = "TalCode"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
 val gAppPackageName = "com.zkteam.livedata.bus1".replace(".", "/")
 
@@ -31,10 +31,10 @@ const val resourceZip = "/ZKLiveDataBus.zip"
 val resourceZipList = mutableListOf(resourceZip, "/ftl.zip")
 val ftl2FileMap = mutableMapOf(
         "/README.md.ftl" to "/$gRootDirName/README.md",
-        "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
-        "/app/values/strings.xml.ftl" to "/$gRootDirName/app/src/main/res/values/strings.xml",
-        "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
-        "/app/AndroidManifest.xml.ftl" to "/$gRootDirName/app/src/main/AndroidManifest.xml"
+//        "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
+//        "/app/values/strings.xml.ftl" to "/$gRootDirName/app/src/main/res/values/strings.xml",
+//        "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
+//        "/app/AndroidManifest.xml.ftl" to "/$gRootDirName/app/src/main/AndroidManifest.xml"
 )
 
 
