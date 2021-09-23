@@ -1,7 +1,7 @@
 buildscript {
     apply from: "http://www.zkteam.cc/android/gradle/versions.gradle"
 
-    ext.kotlin_version = '1.2.31'
+    ext.kotlin_version = '1.4.21'
 
     addRepos(repositories)
 
