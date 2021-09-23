@@ -13,7 +13,7 @@ import java.nio.file.Files
 //===============生成项目相关内容 start ===============
 
 const val gNewName = "ExamDetail"
-const val gRootDirName = "TalCode/$gNewName"
+var gRootDirName = "TalCode/${gNewName.toLowerCase()}"
 // 通用的文件前缀
 const val gFilePrefix = "TalFileName"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
