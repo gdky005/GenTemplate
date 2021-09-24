@@ -1,11 +1,11 @@
-package com.xes.teacher.live.ui.${name}.viewmodel;
+package com.xes.teacher.live.ui.${smallName}.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.xes.teacher.live.base.viewmodel.BaseViewModel;
 import com.xes.teacher.live.constant.RequestParamsConstants;
-import com.xes.teacher.live.ui.${name}.bean.ExamDetailDataBean;
-import com.xes.teacher.live.ui.${name}.repo.ExaminationPaperRepository;
+import com.xes.teacher.live.ui.${smallName}.bean.ExamDetailDataBean;
+import com.xes.teacher.live.ui.${smallName}.repo.ExaminationPaperRepository;
 
 import java.util.HashMap;
 
@@ -14,7 +14,7 @@ import java.util.HashMap;
  */
 public class ${name}ViewModel extends BaseViewModel<${name}Repository> {
 
-    public MutableLiveData<${name}DataBean> ${name}DataBeanMutableLiveData = new MutableLiveData<>();
+    public MutableLiveData<${name}DataBean> ${varName}DataBeanMutableLiveData = new MutableLiveData<>();
 
     /**
      * 请求数据
@@ -23,6 +23,6 @@ public class ${name}ViewModel extends BaseViewModel<${name}Repository> {
     public void request${name}(String id) {
         HashMap<String, Object> params = new HashMap<>();
         params.put(RequestParamsConstants.KEY_ITEMID, id);
-        getRepository().request${name}Task(${name}DataBeanMutableLiveData, params);
+        getRepository().request${name}Task(${varName}DataBeanMutableLiveData, params);
     }
 }

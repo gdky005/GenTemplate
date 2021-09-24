@@ -13,10 +13,11 @@ import java.nio.file.Files
 //===============生成项目相关内容 start ===============
 
 const val gNewName = "ExamDetail"
-const val gRootDirName = "TalCode/${gNewName}"
-//var gRootDirName = "TalCode/${gNewName.toLowerCase()}"
+//const val gRootDirName = "TalCode/${gNewName}"
+var gRootDirName = "TalCode/${gNewName.toLowerCase()}"
 // 通用的文件前缀
 const val gFilePrefix = "TalFileName"
+const val gLayoutFilePrefix = "tal_layout_name"
 val defaultPackageName = "com.zkteam.livedata.bus".replace(".", "/")
 val gAppPackageName = "com.zkteam.livedata.bus1".replace(".", "/")
 
@@ -35,14 +36,17 @@ val gProRootPathAppJava = "$templateOutDir/$gRootDirName/app/src/main/java"
 const val resourceZip = "/ZKLiveDataBus.zip"
 val resourceZipList = mutableListOf(resourceZip, "/ftl.zip")
 val ftl2FileMap = mutableMapOf(
-        "/README.md.ftl" to "/$gRootDirName/README.md",
-        "/bean/TalFileNameDataBean.java.ftl" to "/$gRootDirName/bean/TalFileNameDataBean.java",
-        "/viewmodel/TalFileNameViewModel.java.ftl" to "/$gRootDirName/viewmodel/TalFileNameViewModel.java",
-        "/repo/TalFileNameRepository.java.ftl" to "/$gRootDirName/repo/TalFileNameRepository.java",
-//        "/app/build.gradle.ftl" to "/$gRootDirName/app/build.gradle",
-//        "/app/values/strings.xml.ftl" to "/$gRootDirName/app/src/main/res/values/strings.xml",
-//        "/package/MainActivity.kt.ftl" to "/$gRootDirName/app/src/main/java/$gAppPackageName/MainActivity.kt",
-//        "/app/AndroidManifest.xml.ftl" to "/$gRootDirName/app/src/main/AndroidManifest.xml"
+    "/README.md.ftl" to "/${gRootDirName}/README.md",
+
+    "/bean/TalFileNameDataBean.java.ftl" to "/${gRootDirName}/bean/TalFileNameDataBean.java",
+    "/viewmodel/TalFileNameViewModel.java.ftl" to "/${gRootDirName}/viewmodel/TalFileNameViewModel.java",
+    "/repo/TalFileNameRepository.java.ftl" to "/${gRootDirName}/repo/TalFileNameRepository.java",
+
+    "/page/activity/TalFileNameActivity.java.ftl" to "/${gRootDirName}/page/activity/TalFileNameActivity.java",
+    "/page/fragment/TalFileNameFragment.java.ftl" to "/${gRootDirName}/page/fragment/TalFileNameFragment.java",
+
+    "/layout/activity_tal_layout_name.xml.ftl" to "/${gRootDirName}/layout/activity_tal_layout_name.xml",
+    "/layout/fragment_tal_layout_name.xml.ftl" to "/${gRootDirName}/layout/fragment_tal_layout_name.xml",
 )
 
 
@@ -64,14 +68,23 @@ fun main(args: Array<String>) {
 
         logD("模板文件地址：$templateDestFtlDir")
 
-        val testBean = TestBean(gNewName,
-                "模板工具",
-                "com.zkteam.livedata.bus1",
-                gRootDirName)
+        val testBean = TestBean(
+            gNewName,
+            WordUtils.getVarName(gNewName),
+            gNewName.toLowerCase(),
+            WordUtils.getLayoutName(gNewName),
+            WordUtils.getLayoutAllBigName(gNewName),
+            "模板工具",
+            "com.xes.teacher.live",
+            gRootDirName
+        )
 
         ftl2FileMap.entries.forEach {
             var newFileName = it.value
+
             newFileName = newFileName.replace(gFilePrefix, gNewName)
+            newFileName = newFileName.replace(gLayoutFilePrefix, WordUtils.getLayoutName(gNewName))
+
             genFileForTemplate(cfg, testBean, it.key, templateOutDir + newFileName)
         }
     } catch (e: IOException) {

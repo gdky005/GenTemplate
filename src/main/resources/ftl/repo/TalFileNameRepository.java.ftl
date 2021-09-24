@@ -1,10 +1,10 @@
-package com.xes.teacher.live.ui.${name}.repo;
+package com.xes.teacher.live.ui.${smallName}.repo;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.xes.teacher.live.api.TLBaseRepository;
 import com.xes.teacher.live.network.http.callback.DefaultTLCallback;
-import com.xes.teacher.live.ui.${name}.bean.${name}DataBean;
+import com.xes.teacher.live.ui.${smallName}.bean.${name}DataBean;
 
 import java.util.HashMap;
 
@@ -16,13 +16,13 @@ public class ${name}Repository extends TLBaseRepository {
     /**
      * 请求 ${name} 的 接口任务
      *
-     * @param ${name}DataBeanMutableLiveData            ${name}DataBeanMutableLiveData
+     * @param ${varName}DataBeanMutableLiveData         ${varName}DataBeanMutableLiveData
      * @param params                                    params
      */
-    public void request${name}Task(MutableLiveData<${name}DataBean> ${name}DataBeanMutableLiveData,
+    public void request${name}Task(MutableLiveData<${name}DataBean> ${varName}DataBeanMutableLiveData,
                                                  HashMap<String, Object> params) {
         addRequestTask(getTlApi().request${name}Task(getPostRequestToBeanBody(params)),
-                new DefaultTLCallback(${name}DataBeanMutableLiveData, this, ${name}DataBean.class));
+                new DefaultTLCallback(${varName}DataBeanMutableLiveData, this, ${name}DataBean.class));
     }
 
 }

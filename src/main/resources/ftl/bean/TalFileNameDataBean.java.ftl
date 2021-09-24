@@ -1,4 +1,4 @@
-package com.xes.teacher.live.ui.${name}.bean;
+package com.xes.teacher.live.ui.${smallName}.bean;
 
 import com.xes.teacher.live.network.bean.BaseBean;
 
