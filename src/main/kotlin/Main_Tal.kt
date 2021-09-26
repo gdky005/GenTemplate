@@ -131,19 +131,25 @@ private fun renameProDir() {
 }
 
 private fun copyZip(resourceZip: String) {
+
+    var resourceZipPath = proDir + resourceZip
     logD("\n\n\n")
     logD("根目录是: $proDir")
+    logD("resourceZip=: $resourceZip")
+    logD("resourceZipPath=: $resourceZipPath")
 
     val fileName = FilenameUtils.getBaseName(resourceZip)
 
-    try {
-        val javaCls = Thread.currentThread().javaClass
+//    try {
+//        val javaCls = Thread.currentThread().javaClass
+//
+//        val inputZip = javaCls.getResourceAsStream(resourceZip)
+//        FileUtils.copyInputStreamToFile(inputZip, File(templateOutDir, resourceZip))
+//    } catch (e: Exception) {
+//        e.printStackTrace()
+//    }
 
-        val inputZip = javaCls.getResourceAsStream(resourceZip)
-        FileUtils.copyInputStreamToFile(inputZip, File(templateOutDir, resourceZip))
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
+    FileUtils.copyFile(File("$proDir/resources$resourceZip"), File(templateOutDir, resourceZip))
 
     logD("开始解压 $fileName 中...")
     UnZip.unZip(File(templateOutDir, resourceZip), templateOutDir)
