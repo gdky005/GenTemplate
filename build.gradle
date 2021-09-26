@@ -1,7 +1,7 @@
 buildscript {
     apply from: "http://www.zkteam.cc/android/gradle/versions.gradle"
 
-    ext.kotlin_version = '1.2.31'
+    ext.kotlin_version = '1.4.21'
 
     addRepos(repositories)
 
@@ -23,7 +23,7 @@ dependencies {
 //    compile 'com.blankj:utilcode:1.24.4'
     compile 'org.apache.commons:commons-lang3:3.8'
     compile 'commons-io:commons-io:2.6'
-    compile 'org.freemarker:freemarker:2.3.28'
+    compile 'org.freemarker:freemarker:2.3.31'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
