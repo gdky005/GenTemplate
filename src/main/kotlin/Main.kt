@@ -246,6 +246,8 @@ private fun renameProDir() {
         if (libFileSourceDir.exists())
             FileUtils.deleteDirectory(libFileSourceDir)
     }
+
+    FileUtils.deleteQuietly(fileSourceDir)
 }
 
 private fun copyZip(resourceZip: String) {
@@ -254,14 +256,7 @@ private fun copyZip(resourceZip: String) {
 
     val fileName = FilenameUtils.getBaseName(resourceZip)
 
-    try {
-        val javaCls = Thread.currentThread().javaClass
-
-        val inputZip = javaCls.getResourceAsStream(resourceZip)
-        FileUtils.copyInputStreamToFile(inputZip, File(templateOutDir, resourceZip))
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
+    FileUtils.copyFile(File("$proDir/resources$resourceZip"), File(templateOutDir, resourceZip))
 
     logD("开始解压 $fileName 中...")
     UnZip.unZip(File(templateOutDir, resourceZip), templateOutDir)
