@@ -85,8 +85,10 @@ fun main(args: Array<String>) {
             newFileName = newFileName.replace(gFilePrefix, gNewName)
             newFileName = newFileName.replace(gLayoutFilePrefix, WordUtils.getLayoutName(gNewName))
 
-            genFileForTemplate(cfg, testBean, it.key, templateOutDir + newFileName)
+            genFileForTemplate(cfg, testBean, it.key, proDir + newFileName)
         }
+
+        FileUtils.deleteDirectory(File(templateOutDir))
     } catch (e: IOException) {
         e.printStackTrace()
     } catch (e: Exception) {
